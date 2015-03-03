@@ -1,0 +1,152 @@
+/* Copyright (c) 2012-2015 Todd Freed <todd.freed@gmail.com>
+
+   This file is part of fab.
+   
+   fab is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
+   fab is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with fab.  If not, see <http://www.gnu.org/licenses/>. */
+
+# definitions
++[$*/../vars.fab]
+
+# source invocations
++[$dcommon]()	@common
+
+# variables
+$libname 			= [ libeval.so ]
+$copts				= [ -fPIC [ [ $* $dcommon ~ lsr c -d v d l/.git d ] ~ s/^/-I ] ]
+$cflags_xapi_final = [ $cflags_final $copts -DXAPI_PROVIDE_BACKTRACE ]
+$cflags_xapi_debug = [ $cflags_debug $copts -DXAPI_PROVIDE_BACKTRACE -DXAPI_RUNTIME_CHECKS ]
+$cflags_xapi_devel = [ $cflags_devel $copts -DXAPI_PROVIDE_BACKTRACE -DXAPI_RUNTIME_CHECKS ]
+$cflags_final 		 = [ $cflags_final $copts -DXAPI_PROVIDE_ERRCODE ]
+$cflags_debug 		 = [ $cflags_debug $copts -DXAPI_PROVIDE_ERRCODE ]
+$cflags_devel 		 = [ $cflags_devel $copts -DXAPI_PROVIDE_ERRCODE ]
+
+# -lrt required for glibc < 2.17 as per man clock_gettime
+$lopts				= [ -shared  [ -Wl,--version-script=$*/exports ~ j ] ]
+$lflags_final	= [ $lopts [ -Wl,-soname,libeval.so ~ j ] ]
+$lflags_debug	= [ $lopts [ -Wl,-soname,libeval.so ~ j ] ]
+$lflags_devel	= [ $lopts [ -Wl,-soname,libeval.devel.so ~ j ] ]
+$lflags_xapi_final = [ $lopts -lxapi [ -Wl,-soname,libeval-xapi.so ~ j ] ]
+$lflags_xapi_debug = [ $lopts -lxapi [ -Wl,-soname,libeval-xapi.so ~ j ] ]
+$lflags_xapi_devel = [ $lopts -lxapi [ -Wl,-soname,libeval-xapi.devel.so ~ j ] ]
+
+# source files
++[@std.c]($dext = [ final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_final)
++[@std.c]($dext = [ debug.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_debug)
++[@std.c]($dext = [ devel.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_devel)
++[@std.c]($dext = [ xapi.final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_final)
++[@std.c]($dext = [ xapi.debug.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_debug)
++[@std.c]($dext = [ xapi.devel.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_devel)
++[@std.xapi.errtab]($dext = [ final.pic.o ]; $rdirs = $*; $apidata = [1]; $cc; $cflags = $cflags_final)
++[@std.xapi.errtab]($dext = [ debug.pic.o ]; $rdirs = $*; $apidata = [1]; $cc; $cflags = $cflags_debug)
++[@std.xapi.errtab]($dext = [ devel.pic.o ]; $rdirs = $*; $apidata = [1]; $cc; $cflags = $cflags_devel)
++[@std.xapi.errtab]($dext = [ xapi.final.pic.o ]; $rdirs = $*; $apidata = [1]; $cc; $cflags = $cflags_xapi_final)
++[@std.xapi.errtab]($dext = [ xapi.debug.pic.o ]; $rdirs = $*; $apidata = [1]; $cc; $cflags = $cflags_xapi_debug)
++[@std.xapi.errtab]($dext = [ xapi.devel.pic.o ]; $rdirs = $*; $apidata = [1]; $cc; $cflags = $cflags_xapi_devel)
++[@std.l]($dext = [ final.pic.o ]; $rdirs = $*; $cc $flex $flexflags; $cflags = $cflags_final)
++[@std.l]($dext = [ debug.pic.o ]; $rdirs = $*; $cc $flex $flexflags; $cflags = $cflags_debug)
++[@std.l]($dext = [ devel.pic.o ]; $rdirs = $*; $cc $flex $flexflags; $cflags = $cflags_devel)
++[@std.l]($dext = [ xapi.final.pic.o ]; $rdirs = $*; $cc $flex $flexflags; $cflags = $cflags_xapi_final)
++[@std.l]($dext = [ xapi.debug.pic.o ]; $rdirs = $*; $cc $flex $flexflags; $cflags = $cflags_xapi_debug)
++[@std.l]($dext = [ xapi.devel.pic.o ]; $rdirs = $*; $cc $flex $flexflags; $cflags = $cflags_xapi_devel)
++[@std.flex.states]($dext = [ final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_final)
++[@std.flex.states]($dext = [ debug.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_debug)
++[@std.flex.states]($dext = [ devel.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_devel)
++[@std.flex.states]($dext = [ xapi.final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_final)
++[@std.flex.states]($dext = [ xapi.debug.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_debug)
++[@std.flex.states]($dext = [ xapi.devel.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_devel)
++[@std.y]($dext = [ final.pic.o ]; $rdirs = $*; $cc $bison $bisonflags; $cflags = $cflags_final)
++[@std.y]($dext = [ debug.pic.o ]; $rdirs = $*; $cc $bison $bisonflags; $cflags = $cflags_debug)
++[@std.y]($dext = [ devel.pic.o ]; $rdirs = $*; $cc $bison $bisonflags; $cflags = $cflags_devel)
++[@std.y]($dext = [ xapi.final.pic.o ]; $rdirs = $*; $cc $bison $bisonflags; $cflags = $cflags_xapi_final)
++[@std.y]($dext = [ xapi.debug.pic.o ]; $rdirs = $*; $cc $bison $bisonflags; $cflags = $cflags_xapi_debug)
++[@std.y]($dext = [ xapi.devel.pic.o ]; $rdirs = $*; $cc $bison $bisonflags; $cflags = $cflags_xapi_devel)
++[@std.bison.tokens]($dext = [ final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_final)
++[@std.bison.tokens]($dext = [ debug.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_debug)
++[@std.bison.tokens]($dext = [ devel.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_devel)
++[@std.bison.tokens]($dext = [ xapi.final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_final)
++[@std.bison.tokens]($dext = [ xapi.debug.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_debug)
++[@std.bison.tokens]($dext = [ xapi.devel.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_xapi_devel)
+
+# default NOFILE target - build library and all operators
+[ @all ] : [ @final @debug @devel ]
+[ @final ] : [ $libeval_final $libeval_xapi_final ]
+[ @debug ] : [ $libeval_debug $libeval_xapi_debug ]
+[ @devel ] : [ $libeval_devel $libeval_xapi_devel ]
+
+##
+## formulas
+##
+
+# library exports
+[ $*/exports ~ j ] : [ $* ~ lsr lx/c ]
+{
+	  (echo "{ global: "
+	> perl -ne 'if(/API(?:DATA)?.*? ([a-zA-Z_][a-zA-Z0-9_]+) *(?:\(|=)/) { print "$1;\n" }' <(\
+	  cat -- [ $@ ~ rx/ineed fi ] )
+	> echo "local: *; };"
+	  ) 1>[ $@ ]
+}
+
+# link the library
+[ $libeval_final ] : [ [ $*/exports ~ j ] [ $* ~ lsr sx/c/final.pic.o sy ] ]
+{
+	[ $cc ] [ $cflags_final ~ uu fi ] -o [ $@ ] [ $@ ~ rx/aneedw lx/o ss u fi ] [ $lflags_final ~ fi ]
+}
+
+[ $libeval_xapi_final ] : [ [ $*/exports ~ j ] [ $* ~ lsr sx/c/xapi.final.pic.o sy ] ]
+{
+	[ $cc ] [ $cflags_xapi_final ~ uu fi ] -o [ $@ ] [ $@ ~ rx/aneedw lx/o ss u fi ] [ $lflags_xapi_final ~ fi ]
+}
+
+[ $libeval_debug ] : [ [ $*/exports ~ j ] [ $* ~ lsr sx/c/debug.pic.o sy ] ]
+{
+	[ $cc ] [ $cflags_debug ~ uu fi ] -o [ $@ ] [ $@ ~ rx/aneedw lx/o ss u fi ] [ $lflags_debug ~ fi ]
+}
+
+[ $libeval_xapi_debug ] : [ [ $*/exports ~ j ] [ $* ~ lsr sx/c/xapi.debug.pic.o sy ] ]
+{
+	[ $cc ] [ $cflags_xapi_debug ~ uu fi ] -o [ $@ ] [ $@ ~ rx/aneedw lx/o ss u fi ] [ $lflags_xapi_debug ~ fi ]
+}
+
+[ $libeval_devel ] : [ [ $*/exports ~ j ] [ $* ~ lsr sx/c/devel.pic.o sy ] ]
+{
+	[ $cc ] [ $cflags_devel ~ uu fi ] -o [ $@ ] [ $@ ~ rx/aneedw lx/o ss u fi ] [ $lflags_devel ~ fi ]
+}
+
+[ $libeval_xapi_devel ] : [ [ $*/exports ~ j ] [ $* ~ lsr sx/c/xapi.devel.pic.o sy ] ]
+{
+	[ $cc ] [ $cflags_xapi_devel ~ uu fi ] -o [ $@ ] [ $@ ~ rx/aneedw lx/o ss u fi ] [ $lflags_xapi_devel ~ fi ]
+}
+
+##
+## tasks
+##
+
+[ @install.final ] : [ @final ]
+{
+	install -d																[ $destdir/$libdir ]
+	install [ $libeval_final ]								[ $destdir/$libdir/$libname ]
+}
+
+[ @install.debug ] : [ @debug ]
+{
+	install -d																[ $destdir/$libdir ]
+	install [ $libeval_debug ]								[ $destdir/$libdir/$libname ]
+}
+
+[ @installdevheaders ]
+{
+	install -d																[ $destdir/$incdir ]
+	install [ $dlibeval/eval.h ]							[ $destdir/$incdir/eval/ ]
+}

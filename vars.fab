@@ -1,0 +1,75 @@
+/* Copyright (c) 2012-2015 Todd Freed <todd.freed@gmail.com>
+
+   This file is part of fab.
+   
+   fab is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
+   fab is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with fab.  If not, see <http://www.gnu.org/licenses/>. */
+
+# variables
+$VERSIONL				= [ 0 4 0 0 ]											# version list - major, minor, revision, build
+$VERSIONS				= [ v [ $VERSIONL ~ j/. ] ~ j ]		# version string
+$VERSIONN				= [ $VERSIONL ~ j s/^0//g ] 			# version number
+
+# source directories
+$dcommon						= [ $*/common ~ j ]
+$dlibeval						= [ $*/libeval ~ j ]
+$dsymcal						= [ $*/symcal ~ j ]
+
+# artifacts
+$libeval_final			= [ $dlibeval/libeval.final.so ~ j ]
+$libeval_debug			= [ $dlibeval/libeval.debug.so ~ j ]
+$libeval_devel			= [ $dlibeval/libeval.devel.so ~ j ]
+$libeval_xapi_final	= [ $dlibeval/libeval.xapi.final.so ~ j ]
+$libeval_xapi_debug	= [ $dlibeval/libeval.xapi.debug.so ~ j ]
+$libeval_xapi_devel	= [ $dlibeval/libeval.xapi.devel.so ~ j ]
+$symcal_final				= [ $dsymcal/symcal.final ~ j ]
+$symcal_debug				= [ $dsymcal/symcal.debug ~ j ]
+$symcal_devel				= [ $dsymcal/symcal.devel ~ j ]
+$symcal_xapi_final	= [ $dsymcal/symcal.xapi.final ~ j ]
+$symcal_xapi_debug	= [ $dsymcal/symcal.xapi.debug ~ j ]
+$symcal_xapi_devel	= [ $dsymcal/symcal.xapi.devel ~ j ]
+
+# install directories (these are suitable for ubuntu-64)
+$destdir				= [ ]															# root install directory - does not affect runtime directories
+$incdir					= [ /usr/include ]								# header files
+$bindir					= [ /usr/local/bin ]							# executables
+$libdir					= [ /usr/lib/x86_64-linux-gnu ]		# dynamically linked libraries
+$mandir					= [ /usr/share/man ]							# man files
+
+#
+# configurable runtime directories
+#  (that may be set at build-time)
+#
+
+# install-time values
+$buildroot	= [ $* ~ can ]
+
+# compilers and their flags
+$flex				= [ flex ]
+$flexflags	= [ ]
+
+$bison			= [ bison ]
+$bisonflags	= [ --warnings=error ]
+
+$cc					= [ gcc ]
+$cflags     = [
+	# universal compiler options
+	[ -m64 -Wall -Werror -D_GNU_SOURCE -fplan9-extensions ]
+
+	# buildstamp
+	[ -DBUILDSTAMP='[ $^starttime ~ datef ]' ~ j ]
+]
+
+$cflags_final = [ $cflags -O3 ]
+$cflags_debug	= [ $cflags -O0 -g -ggdb3 -DDEBUG ]
+$cflags_devel	= [ $cflags -O0 -g -ggdb3 -DDEVEL [ -DBUILDROOT="\""$buildroot"\"" ~ j ] ]
