@@ -17,9 +17,15 @@
 
 #include "internal.h"
 
+#include "xlinux.h"
+
 struct eval_storage
 {
-	
+	ast_storage *		as;					// subordinate ast_storage
+
+	void *		exmem;						// pointer to memory region with execute permissions
+	size_t		exmeml;						// used size
+	size_t		exmema;						// allocated size
 };
 
 #define restrict __restrict
@@ -30,12 +36,19 @@ struct eval_storage
 
 int API eval_storage_alloc(eval_storage ** const restrict es)
 {
-	return 0;
+	fatal(xmalloc, es, sizeof(**es));
+
+	finally : coda;
 }
 
 void API eval_storage_free(eval_storage * es)
 {
-
+	if(es)
+	{
+		ast_storage_free(es->as);
+		munmap(es->exmem, es->exmema);
+	}
+	free(es);
 }
 void API eval_storage_xfree(eval_storage ** const restrict es)
 {

@@ -22,19 +22,32 @@ $VERSIONN				= [ $VERSIONL ~ j s/^0//g ] 			# version number
 
 # source directories
 $dcommon						= [ $*/common ~ j ]
+$dlibxapi						= [ $*/libxapi ~ j ]
+$dlibxlinux					= [ $*/libxlinux ~ j ]
 $dlibeval						= [ $*/libeval ~ j ]
 $dsymcal						= [ $*/symcal ~ j ]
 
+# external artifacts
+$libxapi_final					= [ $dlibxapi/libxapi.final.so ~ j ]
+$libxapi_debug					= [ $dlibxapi/libxapi.debug.so ~ j ]
+$libxapi_devel					= [ $dlibxapi/libxapi-devel.so ~ j ]
+$libxlinux_eapi_final		= [ $dlibxlinux/libxlinux.final.so ~ j ]
+$libxlinux_eapi_debug		= [ $dlibxlinux/libxlinux.debug.so ~ j ]
+$libxlinux_eapi_devel		= [ $dlibxlinux/libxlinux-devel.so ~ j ]
+$libxlinux_xapi_final		= [ $dlibxlinux/libxlinux-xapi.final.so ~ j ]
+$libxlinux_xapi_debug		= [ $dlibxlinux/libxlinux-xapi.debug.so ~ j ]
+$libxlinux_xapi_devel		= [ $dlibxlinux/libxlinux-xapi-devel.so ~ j ]
+
 # artifacts
-$libeval_final			= [ $dlibeval/libeval.final.so ~ j ]
-$libeval_debug			= [ $dlibeval/libeval.debug.so ~ j ]
-$libeval_devel			= [ $dlibeval/libeval.devel.so ~ j ]
-$libeval_xapi_final	= [ $dlibeval/libeval.xapi.final.so ~ j ]
-$libeval_xapi_debug	= [ $dlibeval/libeval.xapi.debug.so ~ j ]
-$libeval_xapi_devel	= [ $dlibeval/libeval.xapi.devel.so ~ j ]
-$symcal_final				= [ $dsymcal/symcal.final ~ j ]
-$symcal_debug				= [ $dsymcal/symcal.debug ~ j ]
-$symcal_devel				= [ $dsymcal/symcal.devel ~ j ]
+$libeval_eapi_final	= [ $dlibeval/libeval.final.so ~ j ]
+$libeval_eapi_debug	= [ $dlibeval/libeval.debug.so ~ j ]
+$libeval_eapi_devel	= [ $dlibeval/libeval-devel.so ~ j ]
+$libeval_xapi_final	= [ $dlibeval/libeval-xapi.final.so ~ j ]
+$libeval_xapi_debug	= [ $dlibeval/libeval-xapi.debug.so ~ j ]
+$libeval_xapi_devel	= [ $dlibeval/libeval-xapi-devel.so ~ j ]
+$symcal_eapi_final	= [ $dsymcal/symcal.eapi.final ~ j ]
+$symcal_eapi_debug	= [ $dsymcal/symcal.eapi.debug ~ j ]
+$symcal_eapi_devel	= [ $dsymcal/symcal.eapi.devel ~ j ]
 $symcal_xapi_final	= [ $dsymcal/symcal.xapi.final ~ j ]
 $symcal_xapi_debug	= [ $dsymcal/symcal.xapi.debug ~ j ]
 $symcal_xapi_devel	= [ $dsymcal/symcal.xapi.devel ~ j ]
@@ -62,14 +75,28 @@ $bison			= [ bison ]
 $bisonflags	= [ --warnings=error ]
 
 $cc					= [ gcc ]
+
+# cflags options
 $cflags     = [
 	# universal compiler options
-	[ -m64 -Wall -Werror -D_GNU_SOURCE -fplan9-extensions ]
+	[ -m64 -Wall -Werror -D_GNU_SOURCE -fplan9-extensions -fno-builtin-log ]
 
 	# buildstamp
 	[ -DBUILDSTAMP='[ $^starttime ~ datef ]' ~ j ]
 ]
 
-$cflags_final = [ $cflags -O3 ]
-$cflags_debug	= [ $cflags -O0 -g -ggdb3 -DDEBUG ]
-$cflags_devel	= [ $cflags -O0 -g -ggdb3 -DDEVEL [ -DBUILDROOT="\""$buildroot"\"" ~ j ] ]
+# cflags options
+$cflags_eapi  = [ -DXAPI_PROVIDE_ERRCODE ]
+$cflags_xapi  = [ -DXAPI_PROVIDE_BACKTRACE ]
+
+$cflags_final = [ -O3 ]
+$cflags_debug = [ -O0 -g -ggdb3 -DDEBUG -DXAPI_RUNTIME_SANITY_CHECKS ]
+$cflags_devel = [ -O0 -g -ggdb3 -DDEVEL -DXAPI_RUNTIME_SANITY_CHECKS [ -DBUILDROOT="\""$buildroot"\"" ~ j ] ]
+
+# cflags variants
+$cflags_eapi_final = [ $cflags $cflags_eapi $cflags_final ]
+$cflags_eapi_debug = [ $cflags $cflags_eapi $cflags_debug ]
+$cflags_eapi_devel = [ $cflags $cflags_eapi $cflags_devel ]
+$cflags_xapi_final = [ $cflags $cflags_xapi $cflags_final ]
+$cflags_xapi_debug = [ $cflags $cflags_xapi $cflags_debug ]
+$cflags_xapi_devel = [ $cflags $cflags_xapi $cflags_devel ]

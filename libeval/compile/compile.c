@@ -23,7 +23,7 @@
 // api
 //
 
-int eval_compile(eval_storage * const restrict es, char * const restrict e, void * restrict fn)
+int API eval_compile(eval_storage * const restrict es, char * const restrict e, void * restrict fn)
 {
 	return 0;
 }

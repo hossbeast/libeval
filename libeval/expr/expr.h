@@ -15,43 +15,32 @@
    You should have received a copy of the GNU General Public License
    along with libeval.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdio.h>
+#ifndef _EVAL_EXPR_H
+#define _EVAL_EXPR_H
 
-#include "eval.h"
-#include "eval/compile.h"
+#include <stdint.h>
 
-#include "xapi.h"
+#define restrict __restrict
 
-int __thread __xapi_r;
+#define EVAL_EXPR_INSPECT_ARGSSZ		1				/* number of parameters, ptr is pointer to int */
+#define EVAL_EXPR_INSPECT_ISNATIVE	2				/* whether the expression was compiled, ptr is pointer to int */
+#define EVAL_EXPR_INSPECT_FNPTR			3				/* pointer to the compiled function, ptr is pointer to function */
 
-int main(int argc, char ** argv, char ** envp)
-{
-#if XAPI_PROVIDE_BACKTRACE
-	char space[256];
+/// expr_inspect
+//
+// SUMMARY
+//  interrogate an expression that has been prepared with eval_prepare
+//
+// PARAMETERS
+//  ex  - 
+//  cmd - 
+//  ptr - 
+//
+// COMMANDS
+//  
+//
+int eval_expr_inspect(eval_expr * const restrict ex, int cmd, void * ptr)
+	__attribute__((nonnull));
+
+#undef restrict
 #endif
-
-	eval_storage * es = 0;
-
-	fatal(eval_storage_alloc, &es);
-
-	char * expr = "a + 5 + 10";
-	int (*fn)(int) = 0;
-	fatal(eval_compile, es, expr, &fn);
-
-	int a = 7;
-	int r = fn(a);
-
-	printf("%s : a = %d : %d\n", expr, a, r);
-
-finally:
-	eval_storage_free(es);
-
-#if XAPI_PROVIDE_BACKTRACE
-	if(XAPI_UNWINDING)
-	{
-		size_t tracesz = xapi_trace_full(space, sizeof(space));
-		dprintf(2, "%.*s\n", (int)tracesz, space);
-	}
-#endif
-coda;
-}

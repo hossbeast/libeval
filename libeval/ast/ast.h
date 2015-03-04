@@ -130,12 +130,8 @@ typedef struct ast
 int ast_storage_alloc(ast_storage ** restrict js)
 	__attribute__((nonnull));
 
-int ast_storage_free(ast_storage * js);
-int ast_storage_xfree(ast_storage ** const restrict js)
-	__attribute__((nonnull));
-
-void ast_free(ast * restrict a)
-void ast_xfree(ast ** const restrict a)
+void ast_storage_free(ast_storage * restrict js);
+void ast_storage_xfree(ast_storage ** const restrict js)
 	__attribute__((nonnull));
 
 /// ast_mknode
@@ -161,6 +157,10 @@ int ast_mk_unary(ast_storage * const restrict js, ast_location * const restrict 
 	__attribute__((nonnull));
 
 int ast_mk_binary(ast_storage * const restrict js, ast_location * const restrict loc, uint32_t operator, ast * const restrict lop, ast * const restrict rop, ast ** restrict j)
+	__attribute__((nonnull));
+
+void ast_free(ast * restrict a);
+void ast_xfree(ast ** const restrict a)
 	__attribute__((nonnull));
 
 #endif

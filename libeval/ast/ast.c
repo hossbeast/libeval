@@ -58,8 +58,33 @@ int getnode(ast_storage * const restrict js, ast_location * const restrict loc, 
 	finally : coda;
 }
 
+static int reduce
+
 //
 // public
+//
+
+int ast_parse(const ast_parser * const p, char * buf, size_t bufsz, ast ** const restrict rv)
+{
+	parse_param pp = {
+		  .tokname			= ast_tokenname
+		, .statename		= ast_statename
+		, .inputstr			= 
+		, .lvalstr			= 
+	};
+
+	// create state for this parse
+	void * state = 0;
+	if((state = ast_yy_scan_bytes(buf, bufsz, p->p)) == 0)
+		tfail(perrtab_SYS, ENOMEM);
+
+	fatal(reduce, ast_yyparse, &pp);
+
+	finally : coda;
+}
+
+//
+// public 
 //
 
 int ast_storage_alloc(ast_storage ** restrict js)
@@ -67,20 +92,20 @@ int ast_storage_alloc(ast_storage ** restrict js)
 	xproxy(xmalloc, js, sizeof(**js));
 }
 
-int ast_storage_free(ast_storage * restrict js)
+void ast_storage_free(ast_storage * restrict js)
 {
 	if(js)
 	{
 		int x;
 		for(x = 0; x < js->nodesa; x++)
-			ast_free(j->nodes[x]);
+			ast_free(js->nodes[x]);
 		free(js->nodes);
 	}
 
 	free(js);
 }
 
-int ast_storage_xfree(ast_storage ** const restrict js)
+void ast_storage_xfree(ast_storage ** const restrict js)
 {
 	ast_storage_free(*js);
 	*js = 0;
@@ -101,6 +126,10 @@ void ast_xfree(ast ** const restrict a)
 	ast_free(*a);
 	*a = 0;
 }
+
+//
+// public node creation
+//
 
 int ast_mk_int(ast_storage * const restrict js, ast_location * const restrict loc, int32_t v, ast ** restrict j)
 {
@@ -133,10 +162,19 @@ int ast_mk_unary(ast_storage * const restrict js, ast_location * const restrict 
 {
 	fatal(getnode, js, loc, AST_TYPE_EXPR, j);
 
+	(*j)->operator = operator;
+	(*j)->op = op;
+
 	finally : coda;
 }
 
 int ast_mk_binary(ast_storage * const restrict js, ast_location * const restrict loc, uint32_t operator, ast * const restrict lop, ast * const restrict rop, ast ** restrict j)
 {
+	fatal(getnode, js, loc, AST_TYPE_EXPR, j);
 
+	(*j)->operator = operator;
+	(*j)->lop = lop;
+	(*j)->rop = rop;
+
+	finally : coda;
 }

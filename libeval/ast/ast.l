@@ -24,7 +24,6 @@
 	#include "ast/ast.tab.h"
 	#include "ast/ast.tokens.h"
 
-	#include "logs.h"
 	#include "macros.h"
 
 	// contains much of the implementation of the scanner
@@ -39,7 +38,7 @@
 	//  token - token to parse
 	//  ldel  - offset at which the location for this token begins 
 	//
-	#define LEX(token, ldel)			\
+	#define LEX(token)						\
 		lexify(											\
 			  token										\
 			, yylval									\
@@ -47,7 +46,7 @@
 			, yyextra									\
 			, yytext									\
 			, yyleng									\
-			, ldel										\
+			, 0												\
 			, 0												\
 			, __FUNCTION__						\
 			, __FILE__								\
@@ -57,7 +56,7 @@
 
 	int lexify(const int token, YYSTYPE * const lval, yyu_location * const lloc, parse_param * const xtra, char * const text, const int leng, const int ldel, const int vdel, const char * func, const char * file, int line, void * const v)
 	{
-		return yyu_lexify(token, lval, sizeof(*lval), lloc, &xtra->yyu_extra, text, leng, ldel, token == LF, func, file, line);
+		return yyu_lexify(token, lval, sizeof(*lval), lloc, &xtra->yyu_extra, text, leng, ldel, 0, func, file, line);
 	}
 %}
 
@@ -66,7 +65,6 @@
 %option bison-bridge bison-locations
 %option prefix="ast_yy"
 %option extra-type="parse_param*"
-%option stack
 
 %%
 
@@ -80,6 +78,6 @@
 ">>"																										{ return LEX(SHR); }
 
  /* values */
-[0-9]+																									{ return LEX(POSINT); }
--[0-9]+																									{ return LEX(NEGINT); }
+[0-9]+																									{ return LEX(INT); }
+-[0-9]+																									{ return LEX(INT); }
 [a-zA-Z_]+																							{ return LEX(VAR); }

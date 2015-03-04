@@ -19,6 +19,7 @@
 #define _EVAL_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 /*
 ** 
@@ -59,12 +60,12 @@ void eval_storage_xfree(eval_storage ** const restrict es)
 /// eval_prepare
 //
 // SUMMARY
-//  prepare an expression for evaluation
+//  prepare an expression
 //
 // PARAMETERS
 //  es - an eval_storage
-//  e  - expression to prepare
-//  ex - 
+//  e  - expression
+//  ex - (returns) parsed expression
 //
 int eval_prepare(eval_storage * restrict es, char * const restrict e, eval_expr ** const restrict ex)
 	__attribute__((nonnull));
@@ -72,9 +73,15 @@ int eval_prepare(eval_storage * restrict es, char * const restrict e, eval_expr 
 /// eval_exec
 //
 // SUMMARY
-//  
+//  evaluate an expression
 //
-int eval_exec(eval_expr * const restrict ex, val * const restrict vec)
+// PARAMETERS
+//  ex     - 
+//  [avec] - 
+//  alen   - 
+//  rv     - (returns) 
+//
+int eval_exec(eval_expr * const restrict ex, val * const avec, size_t alen, val * const rv)
 	__attribute__((nonnull));
 
 #undef restrict

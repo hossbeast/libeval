@@ -21,8 +21,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "internal.h"
-
 #include "yyutil.h"
 
 typedef struct
