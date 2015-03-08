@@ -15,44 +15,18 @@
    You should have received a copy of the GNU General Public License
    along with libeval.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef _EVAL_STORAGE_H
+#define _EVAL_STORAGE_H
 
-#include "eval.h"
-#include "eval/compile.h"
+#include <sys/types.h>
 
-#include "xapi.h"
-
-int __thread __xapi_r;
-
-int main(int argc, char ** argv, char ** envp)
+struct eval_storage
 {
-#if XAPI_PROVIDE_BACKTRACE
-	char space[256];
+	struct ast_parser * as;			// subordinate ast_parser
+
+	void *		exmem;						// pointer to memory region with execute permissions
+	size_t		exmeml;						// used size
+	size_t		exmema;						// allocated size
+};
+
 #endif
-
-	eval_storage * es = 0;
-
-	fatal(eval_storage_alloc, &es);
-
-	char * expr = argv[1];
-	int (*fn)() = 0;
-	fatal(eval_compile, es, expr, &fn);
-
-/*
-	int r = fn();
-	printf("%s : %d\n", expr, r);
-*/
-
-finally:
-	eval_storage_free(es);
-
-#if XAPI_PROVIDE_BACKTRACE
-	if(XAPI_UNWINDING)
-	{
-		size_t tracesz = xapi_trace_full(space, sizeof(space));
-		dprintf(2, "%.*s\n", (int)tracesz, space);
-	}
-#endif
-coda;
-}

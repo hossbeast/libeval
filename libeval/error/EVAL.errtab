@@ -15,6 +15,5 @@
    You should have received a copy of the GNU General Public License
    along with fab.  If not, see <http://www.gnu.org/licenses/>. */
 
-1	DLERROR		dynamic loader error
-2 FTWERROR	filesystem traversal error
-3	LESS			less data available than was expected
+1	SYNTAX syntax error
+1	ILLBYTE unexpected byte sequence

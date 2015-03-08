@@ -35,12 +35,12 @@ $cflags_xapi_devel = [ $cflags_xapi_devel $copts ]
 
 # -lrt required for glibc < 2.17 as per man clock_gettime
 $lopts				= [ -shared  [ -Wl,--version-script=$*/exports ~ j ] ]
-$lflags_eapi_final = [ $lopts $libxlinux_eapi_final [ -Wl,-soname,libeval.so ~ j ] ]
-$lflags_eapi_debug = [ $lopts $libxlinux_eapi_debug [ -Wl,-soname,libeval.so ~ j ] ]
-$lflags_eapi_devel = [ $lopts $libxlinux_eapi_devel [ -Wl,-soname,libeval-devel.so ~ j ] ]
-$lflags_xapi_final = [ $lopts $libxapi_final $libxlinux_xapi_final [ -Wl,-soname,libeval-xapi.so ~ j ] ]
-$lflags_xapi_debug = [ $lopts $libxapi_debug $libxlinux_xapi_debug [ -Wl,-soname,libeval-xapi.so ~ j ] ]
-$lflags_xapi_devel = [ $lopts $libxapi_devel $libxlinux_xapi_devel [ -Wl,-soname,libeval-xapi-devel.so ~ j ] ]
+$lflags_eapi_final = [ $lopts $libpstring_eapi_final $libxlinux_eapi_final [ -Wl,-soname,libeval.so ~ j ] ]
+$lflags_eapi_debug = [ $lopts $libpstring_eapi_debug $libxlinux_eapi_debug [ -Wl,-soname,libeval.so ~ j ] ]
+$lflags_eapi_devel = [ $lopts $libpstring_eapi_devel $libxlinux_eapi_devel [ -Wl,-soname,libeval-devel.so ~ j ] ]
+$lflags_xapi_final = [ $lopts $libxapi_final $libpstring_xapi_final $libxlinux_xapi_final [ -Wl,-soname,libeval-xapi.so ~ j ] ]
+$lflags_xapi_debug = [ $lopts $libxapi_debug $libpstring_xapi_debug $libxlinux_xapi_debug [ -Wl,-soname,libeval-xapi.so ~ j ] ]
+$lflags_xapi_devel = [ $lopts $libxapi_devel $libpstring_xapi_devel $libxlinux_xapi_devel [ -Wl,-soname,libeval-xapi-devel.so ~ j ] ]
 
 # source files
 +[@std.c]($dext = [ eapi.final.pic.o ]; $rdirs = $*; $cc; $cflags = $cflags_eapi_final)
@@ -142,12 +142,12 @@ $lflags_xapi_devel = [ $lopts $libxapi_devel $libxlinux_xapi_devel [ -Wl,-soname
 #
 # intermodule dependencies
 #
-[ $libeval_eapi_final ] :^ [ $libxlinux_eapi_final ]
-[ $libeval_eapi_debug ] :^ [ $libxlinux_eapi_debug ]
-[ $libeval_eapi_devel ] :^ [ $libxlinux_eapi_devel ]
-[ $libeval_xapi_final ] :^ [ $libxapi_final $libxlinux_xapi_final ]
-[ $libeval_xapi_debug ] :^ [ $libxapi_debug $libxlinux_xapi_debug ]
-[ $libeval_xapi_devel ] :^ [ $libxapi_devel $libxlinux_xapi_devel ]
+[ $libeval_eapi_final ] :^ [ $libpstring_eapi_final $libxlinux_eapi_final ]
+[ $libeval_eapi_debug ] :^ [ $libpstring_eapi_debug $libxlinux_eapi_debug ]
+[ $libeval_eapi_devel ] :^ [ $libpstring_eapi_devel $libxlinux_eapi_devel ]
+[ $libeval_xapi_final ] :^ [ $libxapi_final $libpstring_xapi_final $libxlinux_xapi_final ]
+[ $libeval_xapi_debug ] :^ [ $libxapi_debug $libpstring_xapi_debug $libxlinux_xapi_debug ]
+[ $libeval_xapi_devel ] :^ [ $libxapi_devel $libpstring_xapi_devel $libxlinux_xapi_devel ]
 
 #
 # tasks

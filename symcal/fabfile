@@ -33,14 +33,14 @@ $cflags_xapi_debug = [ $cflags_xapi_debug $copts ]
 $cflags_xapi_devel = [ $cflags_xapi_devel $copts ]
 
 $rpath = [ 
-	[ $dlibeval $dlibxlinux $dlibxapi ~ [ ?{ [ rb{$*} ~ j ] "s{^}{'-Wl,-rpath,$ORIGIN/}" "s{$}{'}" ~ fi ] ]
+	[ $dlibeval $dlibxlinux $dlibxapi $dlibpstring ~ [ ?{ [ rb{$*} ~ j ] "s{^}{'-Wl,-rpath,$ORIGIN/}" "s{$}{'}" ~ fi ] ]
 ]
-$lflags_eapi_final = [ $libeval_eapi_final $libxlinux_eapi_final ]
-$lflags_eapi_debug = [ $libeval_eapi_debug $libxlinux_eapi_debug ]
-$lflags_eapi_devel = [ $libeval_eapi_devel $libxlinux_eapi_devel $rpath ]
-$lflags_xapi_final = [ $libeval_xapi_final $libxlinux_xapi_final $libxapi_final ]
-$lflags_xapi_debug = [ $libeval_xapi_debug $libxlinux_xapi_debug $libxapi_debug ]
-$lflags_xapi_devel = [ $libeval_xapi_devel $libxlinux_xapi_devel $libxapi_devel $rpath ]
+$lflags_eapi_final = [ $libeval_eapi_final $libxlinux_eapi_final $libpstring_eapi_final ]
+$lflags_eapi_debug = [ $libeval_eapi_debug $libxlinux_eapi_debug $libpstring_eapi_debug ]
+$lflags_eapi_devel = [ $libeval_eapi_devel $libxlinux_eapi_devel $libpstring_eapi_devel $rpath ]
+$lflags_xapi_final = [ $libeval_xapi_final $libxlinux_xapi_final $libpstring_xapi_final $libxapi_final ]
+$lflags_xapi_debug = [ $libeval_xapi_debug $libxlinux_xapi_debug $libpstring_xapi_debug $libxapi_debug ]
+$lflags_xapi_devel = [ $libeval_xapi_devel $libxlinux_xapi_devel $libpstring_xapi_devel $libxapi_devel $rpath ]
 
 # standard files - standard compilation
 +[@std.c]($dext = [ eapi.final.o ]; $dirs = $sdirs; $cc; $cflags = $cflags_eapi_final)

@@ -28,9 +28,10 @@ typedef struct
 	/* yyu-defined xtra fields */
 	yyu_extra;
 
-	ast_storage *		js;
+	char *					orig;
 
-	ast * 					g;						// parsing results
+	ast_parser *		p;						// parser
+	ast * 					g;						// result node
 	char						temp[256];		// temp space
 } parse_param;
 

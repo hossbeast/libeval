@@ -15,44 +15,30 @@
    You should have received a copy of the GNU General Public License
    along with libeval.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <string.h>
 
-#include "eval.h"
-#include "eval/compile.h"
+#include "internal.h"
 
-#include "xapi.h"
+#define restrict __restrict
 
-int __thread __xapi_r;
+//
+// static
+//
 
-int main(int argc, char ** argv, char ** envp)
+//
+// public
+//
+
+int x86_64_compile(eval_storage * const restrict es, const ast * const restrict a, void * restrict fn)
 {
-#if XAPI_PROVIDE_BACKTRACE
-	char space[256];
-#endif
-
-	eval_storage * es = 0;
-
-	fatal(eval_storage_alloc, &es);
-
-	char * expr = argv[1];
-	int (*fn)() = 0;
-	fatal(eval_compile, es, expr, &fn);
-
-/*
-	int r = fn();
-	printf("%s : %d\n", expr, r);
-*/
-
-finally:
-	eval_storage_free(es);
-
-#if XAPI_PROVIDE_BACKTRACE
-	if(XAPI_UNWINDING)
+#if 0
+	while(a)
 	{
-		size_t tracesz = xapi_trace_full(space, sizeof(space));
-		dprintf(2, "%.*s\n", (int)tracesz, space);
+		
 	}
+
+	finally : coda;
 #endif
-coda;
+
+	return 0;
 }

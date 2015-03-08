@@ -22,6 +22,7 @@
 +[ $dcommon ]()			@common
 +[ $dlibxapi ]()		@libxapi
 +[ $dlibxlinux ]()	@libxlinux
++[ $dlibpstring]()	@libpstring
 +[ $dlibeval]() 		@libeval
 +[ $dsymcal]()			@symcal
 
@@ -30,14 +31,14 @@
 [ @all.eapi ] : [ @final.eapi @debug.eapi @devel.eapi ]
 [ @all.xapi ] : [ @final.xapi @debug.xapi @devel.xapi ]
 [ @final ] : [ @final.eapi @final.xapi ]
-[ @final.eapi ] : [ @libxapi.final.eapi @libxlinux.final.eapi @libeval.final.eapi @symcal.final.eapi ]
-[ @final.xapi ] : [ @libxapi.final.xapi @libxlinux.final.xapi @libeval.final.xapi @symcal.final.xapi ]
+[ @final.eapi ] : [ @libxapi.final.eapi @libpstring.final.eapi @libxlinux.final.eapi @libeval.final.eapi @symcal.final.eapi ]
+[ @final.xapi ] : [ @libxapi.final.xapi @libpstring.final.xapi @libxlinux.final.xapi @libeval.final.xapi @symcal.final.xapi ]
 [ @debug ] : [ @libeval.debug @symcal.debug ]
-[ @debug.eapi ] : [ @libxapi.debug.eapi @libxlinux.debug.eapi @libeval.debug.eapi @symcal.debug.eapi ]
-[ @debug.xapi ] : [ @libxapi.debug.xapi @libxlinux.debug.xapi @libeval.debug.xapi @symcal.debug.xapi ]
+[ @debug.eapi ] : [ @libxapi.debug.eapi @libpstring.debug.eapi @libxlinux.debug.eapi @libeval.debug.eapi @symcal.debug.eapi ]
+[ @debug.xapi ] : [ @libxapi.debug.xapi @libpstring.debug.xapi @libxlinux.debug.xapi @libeval.debug.xapi @symcal.debug.xapi ]
 [ @devel ] : [ @devel.eapi @devel.xapi ]
-[ @devel.eapi ] : [ @libxapi.devel.eapi @libxlinux.devel.eapi @libeval.devel.eapi @symcal.devel.eapi ]
-[ @devel.xapi ] : [ @libxapi.devel.xapi @libxlinux.devel.xapi @libeval.devel.xapi @symcal.devel.xapi ]
+[ @devel.eapi ] : [ @libxapi.devel.eapi @libpstring.devel.eapi @libxlinux.devel.eapi @libeval.devel.eapi @symcal.devel.eapi ]
+[ @devel.xapi ] : [ @libxapi.devel.xapi @libpstring.devel.xapi @libxlinux.devel.xapi @libeval.devel.xapi @symcal.devel.xapi ]
 [ @man ] : [ @libeval.man @symcal.man ]
 
 # install libraries

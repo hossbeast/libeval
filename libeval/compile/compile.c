@@ -15,9 +15,16 @@
    You should have received a copy of the GNU General Public License
    along with libeval.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include <string.h>
+
 #include "internal.h"
 
 #define restrict __restrict
+
+//
+// static
+//
+
 
 //
 // api
@@ -25,5 +32,15 @@
 
 int API eval_compile(eval_storage * const restrict es, char * const restrict e, void * restrict fn)
 {
-	return 0;
+	ast * a = 0;
+
+	// parse the expression
+	fatal(ast_parse, es->as, e, strlen(e), &a);
+
+	if(a)
+	{
+		x86_64_compile(es, a, fn);
+	}
+
+	finally : coda;
 }

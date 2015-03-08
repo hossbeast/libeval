@@ -59,7 +59,7 @@
 %token SHR			">>"
 
 /* nonterminals */
-%type <operator> unary_operator multiplicative_operator additive_operator shift_operator relational_operator equality_operator
+%type <operator> unary_operator multiplicative_operator multiplicative_associative_operator additive_operator additive_associative_operator shift_operator relational_operator equality_operator
  /*
 %type <operator> logor logand bitor bitand bitxor div eq ne ge gt le lt minus plus mod mul shl shr
  */
@@ -82,7 +82,7 @@ logical_or_expr
 	: logical_and_expr
 	| logical_or_expr LOGOR logical_and_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, AST_OPERATOR_LOGOR, $1, $3, &$$);
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, AST_OPERATOR_LOGOR, $1, $3, &$$);
 	}
 	;
 
@@ -90,7 +90,7 @@ logical_and_expr
 	: inclusive_or_expr
 	| logical_and_expr LOGAND inclusive_or_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, AST_OPERATOR_LOGAND, $1, $3, &$$);
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, AST_OPERATOR_LOGAND, $1, $3, &$$);
 	}
 	;
 
@@ -98,7 +98,7 @@ inclusive_or_expr
 	: exclusive_or_expr
 	| inclusive_or_expr '|' exclusive_or_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, AST_OPERATOR_BITOR, $1, $3, &$$);
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, AST_OPERATOR_BITOR, $1, $3, &$$);
 	}
 	;
 
@@ -106,7 +106,7 @@ exclusive_or_expr
 	: and_expr
 	| exclusive_or_expr '^' and_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, AST_OPERATOR_BITXOR, $1, $3, &$$);
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, AST_OPERATOR_BITXOR, $1, $3, &$$);
 	}
 	;
 
@@ -114,7 +114,7 @@ and_expr
 	: equality_expr
 	| and_expr '&' equality_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, AST_OPERATOR_BITAND, $1, $3, &$$);
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, AST_OPERATOR_BITAND, $1, $3, &$$);
 	}
 	;
 
@@ -122,7 +122,7 @@ equality_expr
 	: relational_expr
 	| equality_expr equality_operator relational_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, $2, $1, $3, &$$);
+		YYU_FATAL(ast_mk_binary, parm->p, &@$, $2, $1, $3, &$$);
 	}
 	;
 
@@ -130,7 +130,7 @@ relational_expr
 	: shift_expr
 	| relational_expr relational_operator shift_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, $2, $1, $3, &$$);
+		YYU_FATAL(ast_mk_binary, parm->p, &@$, $2, $1, $3, &$$);
 	}
 	;
 
@@ -138,23 +138,31 @@ shift_expr
 	: additive_expr
 	| shift_expr shift_operator additive_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, $2, $1, $3, &$$);
+		YYU_FATAL(ast_mk_binary, parm->p, &@$, $2, $1, $3, &$$);
 	}
 	;
 
 additive_expr
 	: multiplicative_expr
+	| additive_expr additive_associative_operator multiplicative_expr
+	{
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, $2, $1, $3, &$$);
+	}
 	| additive_expr additive_operator multiplicative_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, $2, $1, $3, &$$);
+		YYU_FATAL(ast_mk_binary, parm->p, &@$, $2, $1, $3, &$$);
 	}
 	;
 
 multiplicative_expr
 	: unary_expr
+	| multiplicative_expr multiplicative_associative_operator unary_expr
+	{
+		YYU_FATAL(ast_mk_polynary, parm->p, &@$, $2, $1, $3, &$$);
+	}
 	| multiplicative_expr multiplicative_operator unary_expr
 	{
-		YYU_FATAL(ast_mk_binary, parm->js, &@$, $2, $1, $3, &$$);
+		YYU_FATAL(ast_mk_binary, parm->p, &@$, $2, $1, $3, &$$);
 	}
 	;
 
@@ -162,7 +170,7 @@ unary_expr
 	: operand
 	| unary_operator unary_expr
 	{
-		YYU_FATAL(ast_mk_unary, parm->js, &@$, $1, $2, &$$);
+		YYU_FATAL(ast_mk_unary, parm->p, &@$, $1, $2, &$$);
 	}
 	;
 
@@ -173,15 +181,15 @@ operand
 	}
 	| INT
 	{
-		YYU_FATAL(ast_mk_int, parm->js, &@$, $1, &$$);
+		YYU_FATAL(ast_mk_int, parm->p, &@$, $1, &$$);
 	}
 	| FLOAT
 	{
-		YYU_FATAL(ast_mk_float, parm->js, &@$, $1, &$$);
+		YYU_FATAL(ast_mk_float, parm->p, &@$, $1, &$$);
 	}
 	| VAR
 	{
-		YYU_FATAL(ast_mk_var, parm->js, &@$, $1, &$$);
+		YYU_FATAL(ast_mk_var, parm->p, &@$, $1, &$$);
 	}
 	;
 
@@ -209,7 +217,10 @@ multiplicative_operator
 	{
 		$$ = AST_OPERATOR_MOD;
 	}
-	| '*'
+	;
+
+multiplicative_associative_operator
+	: '*'
 	{
 		$$ = AST_OPERATOR_MUL;
 	}
@@ -220,7 +231,10 @@ additive_operator
 	{
 		$$ = AST_OPERATOR_MINUS;
 	}
-	| '+'
+	;
+
+additive_associative_operator
+	: '+'
 	{
 		$$ = AST_OPERATOR_PLUS;
 	}

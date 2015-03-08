@@ -18,10 +18,16 @@
 #ifndef _EVAL_INTERNAL_H
 #define _EVAL_INTERNAL_H
 
+// api
 #include "eval.h"
 #include "compile/compile.h"
+
+// internal
+#include "compile/x86_64.h"
 #include "ast/ast.h"
 #include "ast/ast.parse.h"
+#include "error/EVAL.errtab.h"
+#include "storage/storage.internal.h"
 
 #if XAPI_PROVIDE_BACKTRACE
 #include "error/EVAL.errtab.h"

@@ -24,6 +24,7 @@ $VERSIONN				= [ $VERSIONL ~ j s/^0//g ] 			# version number
 $dcommon						= [ $*/common ~ j ]
 $dlibxapi						= [ $*/libxapi ~ j ]
 $dlibxlinux					= [ $*/libxlinux ~ j ]
+$dlibpstring					= [ $*/libpstring ~ j ]
 $dlibeval						= [ $*/libeval ~ j ]
 $dsymcal						= [ $*/symcal ~ j ]
 
@@ -37,6 +38,12 @@ $libxlinux_eapi_devel		= [ $dlibxlinux/libxlinux-devel.so ~ j ]
 $libxlinux_xapi_final		= [ $dlibxlinux/libxlinux-xapi.final.so ~ j ]
 $libxlinux_xapi_debug		= [ $dlibxlinux/libxlinux-xapi.debug.so ~ j ]
 $libxlinux_xapi_devel		= [ $dlibxlinux/libxlinux-xapi-devel.so ~ j ]
+$libpstring_eapi_final	= [ $dlibpstring/libpstring.final.so ~ j ]
+$libpstring_eapi_debug	= [ $dlibpstring/libpstring.debug.so ~ j ]
+$libpstring_eapi_devel	= [ $dlibpstring/libpstring-devel.so ~ j ]
+$libpstring_xapi_final	= [ $dlibpstring/libpstring-xapi.final.so ~ j ]
+$libpstring_xapi_debug	= [ $dlibpstring/libpstring-xapi.debug.so ~ j ]
+$libpstring_xapi_devel	= [ $dlibpstring/libpstring-xapi-devel.so ~ j ]
 
 # artifacts
 $libeval_eapi_final	= [ $dlibeval/libeval.final.so ~ j ]
@@ -90,8 +97,8 @@ $cflags_eapi  = [ -DXAPI_PROVIDE_ERRCODE ]
 $cflags_xapi  = [ -DXAPI_PROVIDE_BACKTRACE ]
 
 $cflags_final = [ -O3 ]
-$cflags_debug = [ -O0 -g -ggdb3 -DDEBUG -DXAPI_RUNTIME_SANITY_CHECKS ]
-$cflags_devel = [ -O0 -g -ggdb3 -DDEVEL -DXAPI_RUNTIME_SANITY_CHECKS [ -DBUILDROOT="\""$buildroot"\"" ~ j ] ]
+$cflags_debug = [ -O0 -ggdb3 -DDEBUG -DXAPI_RUNTIME_SANITY_CHECKS ]
+$cflags_devel = [ -O0 -ggdb3 -DDEVEL -DXAPI_RUNTIME_SANITY_CHECKS [ -DBUILDROOT="\""$buildroot"\"" ~ j ] ]
 
 # cflags variants
 $cflags_eapi_final = [ $cflags $cflags_eapi $cflags_final ]

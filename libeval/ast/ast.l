@@ -16,6 +16,7 @@
    along with fab.  If not, see <http://www.gnu.org/licenses/>. */
 
 %{
+	#include <inttypes.h>
 	#include <stdio.h>
 
 	#include "internal.h"
@@ -56,6 +57,12 @@
 
 	int lexify(const int token, YYSTYPE * const lval, yyu_location * const lloc, parse_param * const xtra, char * const text, const int leng, const int ldel, const int vdel, const char * func, const char * file, int line, void * const v)
 	{
+		// populate semantic value if any on a per token basis
+		if(token == INT)
+			sscanf(text + vdel, "%"SCNd32, &lval->i32);
+		else if(token == FLOAT)
+			sscanf(text + vdel, "%f", &lval->fp);
+
 		return yyu_lexify(token, lval, sizeof(*lval), lloc, &xtra->yyu_extra, text, leng, ldel, 0, func, file, line);
 	}
 %}
@@ -68,8 +75,11 @@
 
 %%
 
+ /* ignored */
+[\t ]																										{ LOCWRITE; }
+
  /* operators */
-[%/*+<>=!&^-]																						{ return LEX(yytext[0]); }
+[~)(%/*+<>=!&^|-]																				{ return LEX(yytext[0]); }
 
  /* operators */
 "&&"																										{ return LEX(LOGAND); }
@@ -81,3 +91,15 @@
 [0-9]+																									{ return LEX(INT); }
 -[0-9]+																									{ return LEX(INT); }
 [a-zA-Z_]+																							{ return LEX(VAR); }
+
+
+<*>[\x00-\x1F\x7F-\xFF]                                 {
+                                                          LOCWRITE;
+                                                          yyu_scanner_error(yylloc, yyextra, EVAL_ILLBYTE, "unexpected byte 0x%02hhx", yytext[0]);
+                                                          return 0; /* return end-of-input */
+                                                        }
+<*>[\x20-\x7E]                                          {
+                                                          LOCWRITE;
+                                                          yyu_scanner_error(yylloc, yyextra, EVAL_ILLBYTE, "unexpected character '%1$c'(0x%1$02hhx)", yytext[0]);
+                                                          return 0; /* return end-of-input */
+                                                        }
