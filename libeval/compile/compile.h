@@ -25,13 +25,15 @@
 /// eval_compile
 //
 // SUMMARY
+//  
 //
 // PARAMETERS
-//  es - 
-//  e  - 
-//  fn - 
+//  es       - 
+//  e        - 
+//  nummodel - 
+//  fn       - 
 //
-int eval_compile(eval_storage * const restrict es, char * const restrict e, void * restrict fn)
+int eval_compile(eval_storage * const restrict es, char * const restrict e, uint32_t nummodel, void * restrict fn)
 	__attribute__((nonnull));
 
 #endif

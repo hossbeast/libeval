@@ -43,6 +43,16 @@ typedef struct val
 	};
 } val;
 
+/*
+** the nummodel specifies the datatype for numeric function arguments and return value
+*/
+#define EVAL_NUMMODEL_INT16			0x0101
+#define EVAL_NUMMODEL_UINT16		0x0201
+#define EVAL_NUMMODEL_INT32			0x0102
+#define EVAL_NUMMODEL_UINT32		0x0202
+#define EVAL_NUMMODEL_INT64			0x0103
+#define EVAL_NUMMODEL_UINT64		0x0203
+
 #define restrict __restrict
 
 /// eval_storage_alloc
@@ -63,11 +73,12 @@ void eval_storage_xfree(eval_storage ** const restrict es)
 //  prepare an expression
 //
 // PARAMETERS
-//  es - an eval_storage
-//  e  - expression
-//  ex - (returns) parsed expression
+//  es       - an eval_storage
+//  e        - expression
+//  nummodel - one of EVAL_NUMMODEL_*
+//  ex       - (returns) parsed expression
 //
-int eval_prepare(eval_storage * restrict es, char * const restrict e, eval_expr ** const restrict ex)
+int eval_prepare(eval_storage * restrict es, char * const restrict e, uint32_t nummodel, eval_expr ** const restrict ex)
 	__attribute__((nonnull));
 
 /// eval_exec

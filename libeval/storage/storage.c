@@ -19,6 +19,8 @@
 
 #include "xlinux.h"
 
+#include "memblk.h"
+
 #define restrict __restrict
 
 //
@@ -30,6 +32,7 @@ int API eval_storage_alloc(eval_storage ** const restrict es)
 	fatal(xmalloc, es, sizeof(**es));
 
 	fatal(ast_parser_alloc, &(*es)->as);
+	fatal(memblk_mk_mapped, &(*es)->exmem, PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS);
 
 	finally : coda;
 }
@@ -39,7 +42,7 @@ void API eval_storage_free(eval_storage * es)
 	if(es)
 	{
 		ast_parser_free(es->as);
-		munmap(es->exmem, es->exmema);
+		memblk_free(es->exmem);
 	}
 	free(es);
 }

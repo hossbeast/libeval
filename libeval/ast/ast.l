@@ -59,7 +59,7 @@
 	{
 		// populate semantic value if any on a per token basis
 		if(token == INT)
-			sscanf(text + vdel, "%"SCNd32, &lval->i32);
+			sscanf(text + vdel, "%"SCNdMAX, &lval->integer);
 		else if(token == FLOAT)
 			sscanf(text + vdel, "%f", &lval->fp);
 
@@ -88,9 +88,9 @@
 ">>"																										{ return LEX(SHR); }
 
  /* values */
-[0-9]+																									{ return LEX(INT); }
--[0-9]+																									{ return LEX(INT); }
+-?[0-9]+																								{ return LEX(INT); }
 [a-zA-Z_]+																							{ return LEX(VAR); }
+[+|-]?[0-9]+\.[0-9]*																		{ return LEX(FLOAT); }
 
 
 <*>[\x00-\x1F\x7F-\xFF]                                 {

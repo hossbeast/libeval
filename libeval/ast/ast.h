@@ -103,7 +103,7 @@ typedef struct ast
 
 	union
 	{
-		int32_t		i;					// INT
+		intmax_t	i;					// INT
 		float			f;					// FLOAT
 		char *		n;					// VAR
 
@@ -187,7 +187,7 @@ void ast_parser_xfree(ast_parser ** const restrict)
 // SUMMARY
 //  create an ast value node
 //
-int ast_mk_int(ast_parser * const restrict js, ast_location * const restrict loc, int32_t v, ast ** restrict j)
+int ast_mk_int(ast_parser * const restrict js, ast_location * const restrict loc, intmax_t v, ast ** restrict j)
 	__attribute__((nonnull));
 
 int ast_mk_float(ast_parser * const restrict js, ast_location * const restrict loc, float v, ast ** restrict j)

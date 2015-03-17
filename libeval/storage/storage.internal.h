@@ -20,13 +20,12 @@
 
 #include <sys/types.h>
 
+struct memblk;
+
 struct eval_storage
 {
 	struct ast_parser * as;			// subordinate ast_parser
-
-	void *		exmem;						// pointer to memory region with execute permissions
-	size_t		exmeml;						// used size
-	size_t		exmema;						// allocated size
+	struct memblk *			exmem;	// executable memory block(s)
 };
 
 #endif

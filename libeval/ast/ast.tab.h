@@ -63,8 +63,8 @@ typedef union YYSTYPE
 /* Line 2053 of yacc.c  */
 #line 43 "libeval/ast/ast.y"
 
-	int						operator;
-	int32_t				i32;
+	uint32_t			operator;
+	intmax_t			integer;
 	float					fp;
 	char *				var;
 	ast *					ast;

@@ -30,7 +30,7 @@
 // api
 //
 
-int API eval_compile(eval_storage * const restrict es, char * const restrict e, void * restrict fn)
+int API eval_compile(eval_storage * const restrict es, char * const restrict e, uint32_t nummodel, void * restrict fn)
 {
 	ast * a = 0;
 
@@ -39,7 +39,7 @@ int API eval_compile(eval_storage * const restrict es, char * const restrict e, 
 
 	if(a)
 	{
-		x86_64_compile(es, a, fn);
+		fatal(x86_64_compile, es, a, nummodel, fn);
 	}
 
 	finally : coda;

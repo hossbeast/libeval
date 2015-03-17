@@ -41,15 +41,15 @@
 %initial-action { memset(&@$, 0, sizeof(@$)); }
 
 %union {
-	int						operator;
-	int32_t				i32;
+	uint32_t			operator;
+	intmax_t			integer;
 	float					fp;
 	char *				var;
 	ast *					ast;
 }
 
 /* terminals */
-%token <i32> INT
+%token <integer> INT
 %token <fp> FLOAT
 %token <var> VAR
 
@@ -60,9 +60,6 @@
 
 /* nonterminals */
 %type <operator> unary_operator multiplicative_operator multiplicative_associative_operator additive_operator additive_associative_operator shift_operator relational_operator equality_operator
- /*
-%type <operator> logor logand bitor bitand bitxor div eq ne ge gt le lt minus plus mod mul shl shr
- */
 %type <ast> expr logical_or_expr logical_and_expr inclusive_or_expr exclusive_or_expr and_expr
 %type <ast> equality_expr relational_expr shift_expr additive_expr multiplicative_expr unary_expr operand
 

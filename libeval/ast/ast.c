@@ -125,7 +125,7 @@ static int normal_psrender(const ast * const restrict a, pstring ** restrict ps,
 {
 	if(a->type == AST_TYPE_INT)
 	{
-		fatal(pscatf, ps, "%"PRId32, a->i);
+		fatal(pscatf, ps, "%"PRIdMAX, a->i);
 	}
 	else if(a->type == AST_TYPE_FLOAT)
 	{
@@ -298,7 +298,7 @@ void ast_xfree(ast ** const restrict a)
 // public node creation
 //
 
-int ast_mk_int(ast_parser * const restrict js, ast_location * const restrict loc, int32_t v, ast ** restrict j)
+int ast_mk_int(ast_parser * const restrict js, ast_location * const restrict loc, intmax_t v, ast ** restrict j)
 {
 	fatal(getnode, js, loc, AST_TYPE_INT, j);
 
@@ -309,7 +309,7 @@ int ast_mk_int(ast_parser * const restrict js, ast_location * const restrict loc
 
 int ast_mk_float(ast_parser * const restrict js, ast_location * const restrict loc, float v, ast ** restrict j)
 {
-	fatal(getnode, js, loc, AST_TYPE_INT, j);
+	fatal(getnode, js, loc, AST_TYPE_FLOAT, j);
 
 	(*j)->f = v;
 	
@@ -318,7 +318,7 @@ int ast_mk_float(ast_parser * const restrict js, ast_location * const restrict l
 
 int ast_mk_var(ast_parser * const restrict js, ast_location * const restrict loc, char * v, ast ** restrict j)
 {
-	fatal(getnode, js, loc, AST_TYPE_INT, j);
+	fatal(getnode, js, loc, AST_TYPE_VAR, j);
 
 	(*j)->n = v;
 	

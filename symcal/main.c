@@ -37,12 +37,10 @@ int main(int argc, char ** argv, char ** envp)
 
 	char * expr = argv[1];
 	int (*fn)() = 0;
-	fatal(eval_compile, es, expr, &fn);
+	fatal(eval_compile, es, expr, EVAL_NUMMODEL_INT16, &fn);
 
-/*
 	int r = fn();
 	printf("%s : %d\n", expr, r);
-*/
 
 finally:
 	eval_storage_free(es);

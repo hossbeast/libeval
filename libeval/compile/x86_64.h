@@ -30,11 +30,12 @@ struct ast;							// ast.h
 // SUMMARY
 //
 // PARAMETERS
-//  es - 
-//  as - 
-//  fn - 
+//  es       - 
+//  as       - 
+//  nummodel - 
+//  fn       - 
 //
-int x86_64_compile(struct eval_storage * const restrict es, const struct ast * const restrict as, void * restrict fn)
+int x86_64_compile(struct eval_storage * const restrict es, const struct ast * const restrict as, uint32_t nummodel, void * restrict fn)
 	__attribute__((nonnull));
 
 #endif

@@ -144,8 +144,8 @@ typedef union YYSTYPE
 /* Line 387 of yacc.c  */
 #line 43 "libeval/ast/ast.y"
 
-	int						operator;
-	int32_t				i32;
+	uint32_t			operator;
+	intmax_t			integer;
 	float					fp;
 	char *				var;
 	ast *					ast;
@@ -506,11 +506,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    71,    71,    78,    82,    83,    90,    91,    98,    99,
-     106,   107,   114,   115,   122,   123,   130,   131,   138,   139,
-     146,   147,   151,   158,   159,   163,   170,   171,   178,   182,
-     186,   190,   197,   201,   205,   212,   216,   223,   230,   237,
-     244,   248,   255,   259,   263,   267,   274,   278
+       0,    68,    68,    75,    79,    80,    87,    88,    95,    96,
+     103,   104,   111,   112,   119,   120,   127,   128,   135,   136,
+     143,   144,   148,   155,   156,   160,   167,   168,   175,   179,
+     183,   187,   194,   198,   202,   209,   213,   220,   227,   234,
+     241,   245,   252,   256,   260,   264,   271,   275
 };
 #endif
 
@@ -1581,7 +1581,7 @@ yyreduce:
     {
         case 2:
 /* Line 1787 of yacc.c  */
-#line 72 "libeval/ast/ast.y"
+#line 69 "libeval/ast/ast.y"
     {
 		parm->g = (yyvsp[(1) - (1)].ast);
 	}
@@ -1589,7 +1589,7 @@ yyreduce:
 
   case 5:
 /* Line 1787 of yacc.c  */
-#line 84 "libeval/ast/ast.y"
+#line 81 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), AST_OPERATOR_LOGOR, (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1597,7 +1597,7 @@ yyreduce:
 
   case 7:
 /* Line 1787 of yacc.c  */
-#line 92 "libeval/ast/ast.y"
+#line 89 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), AST_OPERATOR_LOGAND, (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1605,7 +1605,7 @@ yyreduce:
 
   case 9:
 /* Line 1787 of yacc.c  */
-#line 100 "libeval/ast/ast.y"
+#line 97 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), AST_OPERATOR_BITOR, (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1613,7 +1613,7 @@ yyreduce:
 
   case 11:
 /* Line 1787 of yacc.c  */
-#line 108 "libeval/ast/ast.y"
+#line 105 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), AST_OPERATOR_BITXOR, (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1621,7 +1621,7 @@ yyreduce:
 
   case 13:
 /* Line 1787 of yacc.c  */
-#line 116 "libeval/ast/ast.y"
+#line 113 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), AST_OPERATOR_BITAND, (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1629,7 +1629,7 @@ yyreduce:
 
   case 15:
 /* Line 1787 of yacc.c  */
-#line 124 "libeval/ast/ast.y"
+#line 121 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_binary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1637,7 +1637,7 @@ yyreduce:
 
   case 17:
 /* Line 1787 of yacc.c  */
-#line 132 "libeval/ast/ast.y"
+#line 129 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_binary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1645,7 +1645,7 @@ yyreduce:
 
   case 19:
 /* Line 1787 of yacc.c  */
-#line 140 "libeval/ast/ast.y"
+#line 137 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_binary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1653,7 +1653,7 @@ yyreduce:
 
   case 21:
 /* Line 1787 of yacc.c  */
-#line 148 "libeval/ast/ast.y"
+#line 145 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1661,7 +1661,7 @@ yyreduce:
 
   case 22:
 /* Line 1787 of yacc.c  */
-#line 152 "libeval/ast/ast.y"
+#line 149 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_binary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1669,7 +1669,7 @@ yyreduce:
 
   case 24:
 /* Line 1787 of yacc.c  */
-#line 160 "libeval/ast/ast.y"
+#line 157 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_polynary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1677,7 +1677,7 @@ yyreduce:
 
   case 25:
 /* Line 1787 of yacc.c  */
-#line 164 "libeval/ast/ast.y"
+#line 161 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_binary, parm->p, &(yyloc), (yyvsp[(2) - (3)].operator), (yyvsp[(1) - (3)].ast), (yyvsp[(3) - (3)].ast), &(yyval.ast));
 	}
@@ -1685,7 +1685,7 @@ yyreduce:
 
   case 27:
 /* Line 1787 of yacc.c  */
-#line 172 "libeval/ast/ast.y"
+#line 169 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_unary, parm->p, &(yyloc), (yyvsp[(1) - (2)].operator), (yyvsp[(2) - (2)].ast), &(yyval.ast));
 	}
@@ -1693,7 +1693,7 @@ yyreduce:
 
   case 28:
 /* Line 1787 of yacc.c  */
-#line 179 "libeval/ast/ast.y"
+#line 176 "libeval/ast/ast.y"
     {
 		(yyval.ast) = (yyvsp[(2) - (3)].ast);
 	}
@@ -1701,15 +1701,15 @@ yyreduce:
 
   case 29:
 /* Line 1787 of yacc.c  */
-#line 183 "libeval/ast/ast.y"
+#line 180 "libeval/ast/ast.y"
     {
-		YYU_FATAL(ast_mk_int, parm->p, &(yyloc), (yyvsp[(1) - (1)].i32), &(yyval.ast));
+		YYU_FATAL(ast_mk_int, parm->p, &(yyloc), (yyvsp[(1) - (1)].integer), &(yyval.ast));
 	}
     break;
 
   case 30:
 /* Line 1787 of yacc.c  */
-#line 187 "libeval/ast/ast.y"
+#line 184 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_float, parm->p, &(yyloc), (yyvsp[(1) - (1)].fp), &(yyval.ast));
 	}
@@ -1717,7 +1717,7 @@ yyreduce:
 
   case 31:
 /* Line 1787 of yacc.c  */
-#line 191 "libeval/ast/ast.y"
+#line 188 "libeval/ast/ast.y"
     {
 		YYU_FATAL(ast_mk_var, parm->p, &(yyloc), (yyvsp[(1) - (1)].var), &(yyval.ast));
 	}
@@ -1725,7 +1725,7 @@ yyreduce:
 
   case 32:
 /* Line 1787 of yacc.c  */
-#line 198 "libeval/ast/ast.y"
+#line 195 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_ADDINV;
 	}
@@ -1733,7 +1733,7 @@ yyreduce:
 
   case 33:
 /* Line 1787 of yacc.c  */
-#line 202 "libeval/ast/ast.y"
+#line 199 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_BITINV;
 	}
@@ -1741,7 +1741,7 @@ yyreduce:
 
   case 34:
 /* Line 1787 of yacc.c  */
-#line 206 "libeval/ast/ast.y"
+#line 203 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_LOGINV;
 	}
@@ -1749,7 +1749,7 @@ yyreduce:
 
   case 35:
 /* Line 1787 of yacc.c  */
-#line 213 "libeval/ast/ast.y"
+#line 210 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_DIV;
 	}
@@ -1757,7 +1757,7 @@ yyreduce:
 
   case 36:
 /* Line 1787 of yacc.c  */
-#line 217 "libeval/ast/ast.y"
+#line 214 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_MOD;
 	}
@@ -1765,7 +1765,7 @@ yyreduce:
 
   case 37:
 /* Line 1787 of yacc.c  */
-#line 224 "libeval/ast/ast.y"
+#line 221 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_MUL;
 	}
@@ -1773,7 +1773,7 @@ yyreduce:
 
   case 38:
 /* Line 1787 of yacc.c  */
-#line 231 "libeval/ast/ast.y"
+#line 228 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_MINUS;
 	}
@@ -1781,7 +1781,7 @@ yyreduce:
 
   case 39:
 /* Line 1787 of yacc.c  */
-#line 238 "libeval/ast/ast.y"
+#line 235 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_PLUS;
 	}
@@ -1789,7 +1789,7 @@ yyreduce:
 
   case 40:
 /* Line 1787 of yacc.c  */
-#line 245 "libeval/ast/ast.y"
+#line 242 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_SHL;
 	}
@@ -1797,7 +1797,7 @@ yyreduce:
 
   case 41:
 /* Line 1787 of yacc.c  */
-#line 249 "libeval/ast/ast.y"
+#line 246 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_SHR;
 	}
@@ -1805,7 +1805,7 @@ yyreduce:
 
   case 42:
 /* Line 1787 of yacc.c  */
-#line 256 "libeval/ast/ast.y"
+#line 253 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_GE;
 	}
@@ -1813,7 +1813,7 @@ yyreduce:
 
   case 43:
 /* Line 1787 of yacc.c  */
-#line 260 "libeval/ast/ast.y"
+#line 257 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_GT;
 	}
@@ -1821,7 +1821,7 @@ yyreduce:
 
   case 44:
 /* Line 1787 of yacc.c  */
-#line 264 "libeval/ast/ast.y"
+#line 261 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_LE;
 	}
@@ -1829,7 +1829,7 @@ yyreduce:
 
   case 45:
 /* Line 1787 of yacc.c  */
-#line 268 "libeval/ast/ast.y"
+#line 265 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_LT;
 	}
@@ -1837,7 +1837,7 @@ yyreduce:
 
   case 46:
 /* Line 1787 of yacc.c  */
-#line 275 "libeval/ast/ast.y"
+#line 272 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_EQ;
 	}
@@ -1845,7 +1845,7 @@ yyreduce:
 
   case 47:
 /* Line 1787 of yacc.c  */
-#line 279 "libeval/ast/ast.y"
+#line 276 "libeval/ast/ast.y"
     {
 		(yyval.operator) = AST_OPERATOR_NE;
 	}
