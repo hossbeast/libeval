@@ -1,0 +1,25 @@
+# the program
+[ $*/engine ~ j ] : [ [ $*/main.c ~ j ] [ $*/bytes ~ j ] ]
+{
+	gcc -Wall -Werror -g [ $*/main.c ] -o [ $*/engine ]
+}
+
+# nasm listing
+[ $*/add.lst ~ j ] : [ $*/add.s ~ j ]
+{
+	as [ $*/add.s ] -al=[ $@ ] --listing-lhs-width=3 --64
+}
+
+# code bytes
+[ $*/bytes ~ j ] : [ $*/add.lst ~ j ]
+{
+	lw -L add.lst -T - 1>[ $*/bytes ] <<CODE
+	> ?< s<[0-9a-f]{4,8} ([0-9a-f]{2,12})><\1><i> y		# select code segment from code lines
+	> t j																						# tear into new list, join into single line
+	> ?< s<.{2}><\0 ><g>														# insert a space between each pair of characters
+	> m< ><g> wy wv																	# window-select the spaces, invert
+	> t																							# tear
+	> ln																						# prepend line number
+	> s<([0-9]+) (.*)><mem[\1] = 0x\2;>							# format
+CODE
+}
